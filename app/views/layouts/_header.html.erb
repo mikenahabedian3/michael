@@ -7,9 +7,9 @@
           <div class="col-lg-3 col-md-2">
             <!-- Logo -->
             <div class="logo">
-              <a href="index.html"
-                ><img src="assets/img/logo/logo.png" alt=""
-              /></a>
+              <a href="#">
+                <img src="<%= asset_url("img/logo/logo.png")%>" alt=""/>
+              </a>
             </div>
           </div>
           <div class="col-lg-9 col-md-9">
@@ -18,29 +18,27 @@
               <div class="main-menu">
                 <nav class="d-none d-lg-block">
                   <ul id="navigation">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="job_listing.html">Find a Jobs </a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="#">Home</a></li>
+                    <% if current_user.present? %>
+                      <li><a href="#">My Profile</a></li>
+                    <% end %>
+                    <li><a href="#">Find a Jobs </a></li>
                     <li>
                       <a href="#">Page</a>
                       <ul class="submenu">
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="single-blog.html">Blog Details</a></li>
-                        <li><a href="elements.html">Elements</a></li>
-                        <li><a href="job_details.html">job Details</a></li>
+                        <li><a href="#">Blog</a></li>
                       </ul>
                     </li>
-                    <li><a href="contact.html">Contact</a></li>
                   </ul>
                 </nav>
               </div>
               <!-- Header-btn -->
               <div class="header-btn d-none f-right d-lg-block">
                 <% unless current_user.present? %>
-                  <%= link_to 'LogIn', new_user_session_path, class: 'btn head-btn2'%>
-                  <%= link_to 'Register', new_user_registration_path, class: 'btn head-btn1'%>
+                  <%= link_to "LogIn", new_user_session_path, class: "btn head-btn2"%>
+                  <%= link_to "Register", new_user_registration_path, class: "btn head-btn1"%>
                 <% else %>
-                  <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, id: "sign_out_menu_link", class: "dropdown-item" %>
+                  <%= link_to "Sign out", destroy_user_session_path, class: "btn head-btn1", data: { turbo_method: :delete }, id: "sign_out_menu_link" %>
                 <% end %>
               </div>  
             </div>
