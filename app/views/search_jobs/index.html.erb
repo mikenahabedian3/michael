@@ -1,0 +1,112 @@
+<div class="slider-area ">
+  <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="assets/img/hero/about.jpg">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="hero-cap text-center">
+            <h2>Get your job</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="job-listing-area pt-120 pb-120">
+  <div class="container">
+    <div class="row">
+      <!-- Left content -->
+      <div class="col-xl-3 col-lg-3 col-md-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="small-section-tittle2 mb-45">
+              <div class="ion">
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="20px" height="12px">
+                  <path fill-rule="evenodd"  fill="rgb(27, 207, 107)"
+                    d="M7.778,12.000 L12.222,12.000 L12.222,10.000 L7.778,10.000 L7.778,12.000 ZM-0.000,-0.000 L-0.000,2.000 L20.000,2.000 L20.000,-0.000 L-0.000,-0.000 ZM3.333,7.000 L16.667,7.000 L16.667,5.000 L3.333,5.000 L3.333,7.000 Z"/>
+                </svg>
+              </div>
+              <h4>Filter Jobs</h4>
+            </div>
+          </div>
+        </div>
+        <!-- Job Category Listing start -->
+        <div class="job-category-listing mb-50">
+          <!-- single one -->
+          <%= form_tag search_jobs_path, method: "get" do %>
+            <div class="single-listing">
+              <div class="small-section-tittle2">
+                <h4>Job Title</h4>
+              </div>
+              <!-- Select job items start -->
+              <div class="select-job-items2">
+                <%= text_field_tag :q, params[:q], placeholder: "Job Tittle: Software Engineer", class: "input-select-style" %>
+              </div>
+              <!-- Select job items start -->
+              <div class="select-Categories pt-50 pb-50">
+                <div class="small-section-tittle2">
+                  <h4>Country</h4>
+                </div>
+                <div class="select-job-items2">
+                  <%= select_tag :country, options_for_select(UserJobSearchParameter::COUNTRY, "India"), class: "form-select input-select-style" %>
+                </div>
+              </div>
+              <!--  Select job items End-->
+              <div class="small-section-tittle2">
+                <h4>Job Location</h4>
+              </div>
+              <div class="select-job-items2">
+                <%= text_field_tag :location, params[:location], placeholder: "City: Indore", class: "input-select-style" %>
+              </div>
+              <!-- select-Categories End -->
+            </div>
+          <% end %>
+        </div>
+      <!-- Job Category Listing End -->
+      </div>
+      <div class="col-xl-9 col-lg-9 col-md-8">
+        <!-- Featured_job_start -->
+        <section class="featured-job-area">
+          <div class="container">
+            <% if @jobs.any? %>
+              <% @jobs.each do |job| %>
+                <% detected_extensions = eval(job.detected_extensions[0]) %>
+                <div class="single-job-items mb-30">
+                  <div class="job-items">
+                    <div class="company-img">
+                      <a href="#"><img src="<%= job.thumbnail %>" alt=""></a>
+                    </div>
+                    <div class="job-tittle job-tittle2">
+                      <a href="#">
+                        <h4><%= "job.title" %></h4>
+                      </a>
+                      <ul>
+                        <li><%= job.company_name %></li>
+                        <li><i class="fas fa-map-marker-alt"></i><%= job.location %></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="items-link items-link2 f-right">
+                    <a href="#"><%= detected_extensions[:schedule_type] %></a>
+                    <% if current_user.user_jobs.where(job_id: job.id).present? %>
+                      <%= link_to "Already Saved", "javascript:void(0);", class: "saved-job-btn" %>
+                    <% else %>
+                      <%= link_to "Save this job", save_job_user_jobs_path(job_id: job.id, params: params), method: :post %>
+                    <% end %>
+                    <span><%= detected_extensions[:posted_at] %></span>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              No Record Found!
+            <% end %>
+          </div>
+        </section>
+        <!-- Featured_job_end -->
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -4,4 +4,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+
+  resources :search_jobs, only: [:index]
+  resources :user_jobs do
+    get :save_job, on: :collection
+  end
 end

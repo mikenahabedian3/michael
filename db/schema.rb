@@ -10,9 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_09_100649) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_14_065035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "title"
+    t.string "job_id"
+    t.string "company_name"
+    t.string "location"
+    t.string "via"
+    t.string "thumbnail"
+    t.text "description"
+    t.text "job_highlights", array: true
+    t.text "related_links", array: true
+    t.text "extensions", array: true
+    t.text "detected_extensions", array: true
+    t.bigint "user_job_search_parameter_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_job_search_parameter_id"], name: "index_jobs_on_user_job_search_parameter_id"
+  end
+
+  create_table "user_job_search_parameters", force: :cascade do |t|
+    t.string "engine"
+    t.string "query_q"
+    t.string "language_hl"
+    t.string "country_gl"
+    t.string "location"
+    t.string "google_domain"
+    t.integer "last_page_no"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_jobs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "job_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_id"], name: "index_user_jobs_on_job_id"
+    t.index ["user_id"], name: "index_user_jobs_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"

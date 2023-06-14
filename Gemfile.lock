@@ -106,6 +106,7 @@ GEM
     ffi (1.15.5)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    google_search_results (2.2.0)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.1.6)
@@ -291,6 +292,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  google_search_results (~> 2.2)
   importmap-rails
   jbuilder
   jquery-rails

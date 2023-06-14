@@ -80,3 +80,4 @@ end
 gem "bootstrap", "~> 5.3.0.alpha3"
 gem "jquery-rails"
 gem "devise"
+gem "google_search_results", "~> 2.2"
