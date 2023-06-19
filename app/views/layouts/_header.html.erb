@@ -7,9 +7,9 @@
           <div class="col-lg-3 col-md-2">
             <!-- Logo -->
             <div class="logo">
-              <a href="#">
+              <%= link_to root_path do %>
                 <img src="<%= asset_url("img/logo/logo.png")%>" alt=""/>
-              </a>
+              <% end %>
             </div>
           </div>
           <div class="col-lg-9 col-md-9">
@@ -18,14 +18,16 @@
               <div class="main-menu">
                 <nav class="d-none d-lg-block">
                   <ul id="navigation">
+                    <li><%= link_to "Home", root_path %></li>
                     <% if current_user.present? %>
                       <li>
-                        <a href="#">Profile</a>
+                        <a href="#">My Profile</a>
                         <ul class="submenu">
                           <li><%= link_to "Saved Jobs", user_jobs_path %></li>
                         </ul>
-                    </li>
+                      </li>
                     <% end %>
+                    <li><%= link_to "Ask Me?", initialize_chatgpt_path %></li>
                   </ul>
                 </nav>
               </div>

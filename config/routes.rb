@@ -4,8 +4,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+  get "/initialize_chatgpt" => "home#initialize_chatgpt", as: "initialize_chatgpt"
+  get "/chatgpt_response" => "home#chatgpt_response", as: "chatgpt_response"
 
-  resources :search_jobs, only: [:index]
+  resources :search_jobs, only: [:index, :show]
   resources :user_jobs do
     get :save_job, on: :collection
   end

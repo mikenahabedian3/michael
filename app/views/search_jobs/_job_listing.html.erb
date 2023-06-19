@@ -1,0 +1,42 @@
+<section class="featured-job-area">
+  <div class="container">
+    <% if @jobs.any? %>
+      <% @jobs.each do |job| %>
+        <% detected_extensions = eval(job.detected_extensions[0]) %>
+        <div class="single-job-items mb-30">
+          <div class="job-items">
+            <div class="company-img">
+              <% if job.thumbnail.nil? %>
+                <%= link_to search_job_path(job.id) do %>
+                  <%= image_tag(asset_url("img/logo/logo-icon.png"), width: 40, height: 40) %>
+                <% end %>
+              <% else %>
+                <%= link_to search_job_path(job.id) do %>
+                  <%= image_tag(job.thumbnail) %>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="job-tittle job-tittle2">
+              <h4><%= link_to job.title.truncate(40, omission: "..."), search_job_path(job.id), class: "link" %></h4>
+              <ul>
+                <li><%= job.company_name %></li>
+                <li><i class="fas fa-map-marker-alt"></i><%= job.location %></li>
+              </ul>
+            </div>
+          </div>
+          <div class="items-link items-link2 f-right">
+            <a href="#"><%= detected_extensions[:schedule_type] %></a>
+            <% if current_user.present? && current_user.user_jobs.where(job_id: job.id).present? %>
+              <%= link_to "Already Saved", "javascript:void(0);", class: "saved-job-btn" %>
+            <% else %>
+              <%= link_to "Save this job", save_job_user_jobs_path(job_id: job.id) %>
+            <% end %>
+            <span><%= detected_extensions[:posted_at] %></span>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      No Record Found!
+    <% end %>
+  </div>
+</section>

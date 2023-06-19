@@ -67,46 +67,23 @@
       <!-- Job Category Listing End -->
       </div>
       <div class="col-xl-9 col-lg-9 col-md-8">
-        <!-- Featured_job_start -->
-        <section class="featured-job-area">
-          <div class="container">
-            <% if @jobs.any? %>
-              <% @jobs.each do |job| %>
-                <% detected_extensions = eval(job.detected_extensions[0]) %>
-                <div class="single-job-items mb-30">
-                  <div class="job-items">
-                    <div class="company-img">
-                      <a href="#"><img src="<%= job.thumbnail %>" alt=""></a>
-                    </div>
-                    <div class="job-tittle job-tittle2">
-                      <a href="#">
-                        <h4><%= "job.title" %></h4>
-                      </a>
-                      <ul>
-                        <li><%= job.company_name %></li>
-                        <li><i class="fas fa-map-marker-alt"></i><%= job.location %></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="items-link items-link2 f-right">
-                    <a href="#"><%= detected_extensions[:schedule_type] %></a>
-                    <% if current_user.user_jobs.where(job_id: job.id).present? %>
-                      <%= link_to "Already Saved", "javascript:void(0);", class: "saved-job-btn" %>
-                    <% else %>
-                      <%= link_to "Save this job", save_job_user_jobs_path(job_id: job.id, params: params), method: :post %>
-                    <% end %>
-                    <span><%= detected_extensions[:posted_at] %></span>
-                  </div>
-                </div>
-              <% end %>
-            <% else %>
-              No Record Found!
-            <% end %>
-          </div>
-        </section>
-        <!-- Featured_job_end -->
+        <%= render "job_listing", jobs: @jobs %>
       </div>
-
     </div>
   </div>
 </div>
+<nav>
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <%= link_to "←", search_jobs_path(country: params[:country], q: params[:q], location: params[:location], page: 1), method: "get", class: "page-link" %>
+    </li>
+    <% @next_page.times do |i| %>
+      <li class="page-item <%= @next_page == i+1 ? 'active': '' %>">
+        <%= link_to i+1, search_jobs_path(country: params[:country], q: params[:q], location: params[:location], page: i+1), method: "get", class: "page-link" %>
+      </li>
+    <% end %>
+    <li class="page-item">
+      <%= link_to "→", search_jobs_path(country: params[:country], q: params[:q], location: params[:location], page: @next_page), method: "get", class: "page-link" %>
+    </li>
+  </ul>
+</nav>

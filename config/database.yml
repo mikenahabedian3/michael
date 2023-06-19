@@ -1,0 +1,17 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  username: sheshg
+  password: postgres
+  host: localhost
+
+development:
+  <<: *default
+  database: indeed_job_fetch_development
+
+test:
+  <<: *default
+  database: indeed_job_fetch_test
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>

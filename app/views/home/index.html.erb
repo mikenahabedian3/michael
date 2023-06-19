@@ -24,6 +24,7 @@
                 <div class="input-form city-country">
                   <%= text_field_tag :q, "", placeholder: "Job Tittle: Software Engineer" %>
                   <%= text_field_tag :location, "", placeholder: "City: Indore" %>
+                  <%= hidden_field_tag :page, 0 %>
                 </div>
                 <div class="search-form">
                   <%= submit_tag "Find job", class: "submit-btn" %>
@@ -49,40 +50,9 @@
   <div class="container">
     <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12">
-        <!-- Featured_job_start -->
-        <section class="featured-job-area">
-          <div class="container">
-            <% if @jobs.any? %>
-              <% @jobs.each do |job| %>
-                <% detected_extensions = eval(job.detected_extensions[0]) %>
-                <div class="single-job-items mb-30">
-                  <div class="job-items">
-                    <div class="company-img">
-                      <a href="#"><img src="<%= job.thumbnail %>" alt=""></a>
-                    </div>
-                    <div class="job-tittle job-tittle2">
-                      <a href="#">
-                        <h4><%= job.title %></h4>
-                      </a>
-                      <ul>
-                        <li><%= job.company_name %>></li>
-                        <li><i class="fas fa-map-marker-alt"></i><%= job.location %></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="items-link items-link2 f-right">
-                    <a href="#"><%= detected_extensions[:schedule_type] %></a>
-                    <span><%= detected_extensions[:posted_at] %></span>
-                  </div>
-                </div>
-              <% end %>
-            <% else %>
-              No Record Found!
-            <% end %>
-          </div>
-        </section>
-        <!-- Featured_job_end -->
+        <%= render "search_jobs/job_listing", jobs: @jobs %>
       </div>
     </div>
   </div>
 </div>
+<%= render "search_jobs/pagination", jobs: @jobs %>

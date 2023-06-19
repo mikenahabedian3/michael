@@ -1,24 +1,40 @@
-
+<div class="slider-area ">
+  <div class="single-slider section-overly slider-height2 d-flex align-items-center" data-background="assets/img/hero/about.jpg">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="hero-cap text-center">
+            <h2>Saved jobs</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="job-listing-area pt-120 pb-120">
   <div class="container">
     <div class="row">
-      <!-- Left content -->
-      <div class="col-xl-9 col-lg-9 col-md-8">
-        <!-- Featured_job_start -->
+      <div class="col-xl-12 col-lg-12 col-md-12">
         <section class="featured-job-area">
           <div class="container">
             <% if @jobs.any? %>
-              <% @jobs.each do |user_job| %>
-                <% job = Job.find(user_job.job_id) %>
+              <% @jobs.each do |job| %>
                 <% detected_extensions = eval(job.detected_extensions[0]) %>
                 <div class="single-job-items mb-30">
                   <div class="job-items">
                     <div class="company-img">
-                      <a href="#"><img src="<%= job.thumbnail %>" alt=""></a>
+                      <% if job.thumbnail.nil? %>
+                        <%= link_to search_job_path(job.id) do %>
+                          <%= image_tag(asset_url("img/logo/logo-icon.png"), width: 40, height: 40) %>
+                        <% end %>
+                      <% else %>
+                        <%= link_to search_job_path(job.id) do %>
+                          <%= image_tag(job.thumbnail) %>
+                        <% end %>
+                      <% end %>
                     </div>
                     <div class="job-tittle job-tittle2">
-                      <a href="#">
-                        <h4><%= "job.title" %></h4>
-                      </a>
+                      <h4><%= link_to job.title.truncate(40, omission: "..."), search_job_path(job.id), class: "link" %></h4>
                       <ul>
                         <li><%= job.company_name %></li>
                         <li><i class="fas fa-map-marker-alt"></i><%= job.location %></li>
@@ -27,11 +43,7 @@
                   </div>
                   <div class="items-link items-link2 f-right">
                     <a href="#"><%= detected_extensions[:schedule_type] %></a>
-                    <% if current_user.user_jobs.where(job_id: job.id).present? %>
-                      <%= link_to "Already Saved", "javascript:void(0);", class: "saved-job-btn" %>
-                    <% else %>
-                      <%= link_to "Save this job", save_job_user_jobs_path(job_id: job.id, params: params), method: :post %>
-                    <% end %>
+                    <%= link_to "Remove", "javascript:void(0);", class: "saved-job-btn" %>
                     <span><%= detected_extensions[:posted_at] %></span>
                   </div>
                 </div>
@@ -41,7 +53,7 @@
             <% end %>
           </div>
         </section>
-        <!-- Featured_job_end -->
       </div>
-
     </div>
+  </div>
+</div>

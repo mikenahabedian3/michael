@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class JobService < ApplicationService
-  def initialize(q:, location:, country: "in", language: "en", page_no: 0)
+  def initialize(q:, location: "Indore", country: "in", language: "en", page: 0)
     @params = {
       q: q,
       hl: language,
       gl: country,
       location: location,
       google_domain: "google.com",
-      last_page_no: page_no
+      last_page_no: page
     }
   end
 
@@ -24,7 +24,15 @@ class JobService < ApplicationService
     ).where("created_at > ?", 1.week.ago.to_date)
 
     if search_params.any?
-      { success: true, data: Job.where(user_job_search_parameter_id: search_params.last.id), messages: "Filtered job results" }
+      {
+        success: true,
+        data: Job.where(
+          user_job_search_parameter_id: search_params.last.id
+        ).paginate(page: @params[:last_page_no], per_page: 10)
+        .order(created_at: :desc),
+        messages: "Filtered job results",
+        next_page: @params[:last_page_no].to_i+1
+      }
     else
       fetch_data_from_api_store_return
     end
@@ -48,7 +56,7 @@ class JobService < ApplicationService
         country_gl: @params[:gl],
         location: @params[:location],
         google_domain: @params[:google_domain],
-        last_page_no: @params[:last_page_no]
+        last_page_no: @params[:last_page_no].to_i+1
       }
     )
     user_job_search_parameter.save
@@ -67,6 +75,12 @@ class JobService < ApplicationService
         detected_extensions: [job[:detected_extensions]]
       )
     end
-    { success: true, data: user_job_search_parameter.jobs, messages: "Filtered job results" }
+    {
+      success: true,
+      data: user_job_search_parameter
+      .jobs.order(created_at: :desc),
+      messages: "Filtered job results",
+      next_page: @params[:last_page_no].to_i+1
+    }
   end
 end

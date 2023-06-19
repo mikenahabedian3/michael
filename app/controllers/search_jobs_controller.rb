@@ -1,23 +1,21 @@
 # frozen_string_literal: true
 
 class SearchJobsController < ApplicationController
+  include JobSearch
+
   def index
-    @response = JobService.new(
-                            q: filter_params[:q],
-                            location: filter_params[:location],
-                            country: filter_params[:country]
-                          ).call
-    if (@response[:success])
-      flash[:success] = @response[:messages]
-    else
-      flash[:alert] = @response[:messages]
-    end
-    @jobs = @response[:data]
+    data = get_all_jobs(filtered_params)
+    @next_page = data[:next_page]
+    @jobs = data[:jobs]
+  end
+
+  def show
+    @job = Job.find_by_id(params[:id])
   end
 
   private
 
-  def filter_params
+  def filtered_params
     params.permit!
   end
 end
